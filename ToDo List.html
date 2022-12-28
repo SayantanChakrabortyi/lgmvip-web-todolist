@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ToDo List</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<h1><samp id="todo">Let's </samp><samp id="plan">Plan </samp><samp id="todo">it...</samp></h1>
+
+<input type="text" id="todoItem" placeholder="What ToDo?" autofocus>
+
+<button id="add" onclick="check(document.getElementById('todoItem').value)">+</button>
+
+<div id="container">
+	<!-- Items will get inserted inside this div -->
+	
+</div>
+
+<script>   
+   window.addEventListener('keydown', (e) =>{
+	if(e.which == 13){
+		check(document.getElementById('todoItem').value);
+	}
+})
+
+let i = 0;
+let check =(data)=>{
+	if (data != ""){
+		let nodeDiv = document.createElement("div");
+			nodeDiv.setAttribute("id", "item-"+i);
+			nodeDiv.setAttribute("class", "item");
+			// console.log(document.getElementById("item"+n))
+
+		let nodeChk = document.createElement("input");
+			nodeChk.setAttribute("type", "checkbox");
+			nodeChk.setAttribute("id", "chkbox");
+			nodeChk.setAttribute("onclick", "done(this.parentNode)");
+
+		let nodeText = document.createElement("input");
+			nodeText.setAttribute("type","text");
+			nodeText.setAttribute("id", "itemAdded");
+			nodeText.setAttribute("class", "itemAdded");
+			nodeText.setAttribute("disabled", true);
+			nodeText.setAttribute("value",data);
+			
+			nodeText.style.fontStyle = 'italic';
+			nodeText.style.color = "gray";
+
+		let nodeEdit = document.createElement("samp");
+			nodeEdit.setAttribute("id", "edit");
+			nodeEdit.setAttribute("onclick", "edit(this.parentNode)");
+			nodeEdit.style.color = "lime";
+			var edit = document.createTextNode("Edit");
+			nodeEdit.appendChild(edit);
+
+		let nodeRemove = document.createElement("samp");
+			nodeRemove.setAttribute("id", "del");
+			nodeRemove.setAttribute("onclick", "del(this.parentNode)");
+			nodeRemove.style.color = "red";
+			var remove = document.createTextNode("Remove");
+			nodeRemove.appendChild(remove);
+
+		nodeDiv.appendChild(nodeChk);
+		nodeDiv.appendChild(nodeText);
+		nodeDiv.appendChild(nodeEdit);
+		nodeDiv.appendChild(nodeRemove);
+		document.getElementById("container").appendChild(nodeDiv);
+
+		document.getElementById("todoItem").value = "";
+		i++;
+	}
+}
+
+let done = (data)=>{
+	let text = data.querySelector("#itemAdded").value;
+	if (data.querySelector("#chkbox").checked == true){
+		if (data.querySelector("#edit").innerHTML == "Save"){
+			data.querySelector("#itemAdded").style.color = "white";
+		}
+		else{
+			data.querySelector("#itemAdded").style.color = "cyan";
+		}
+	}
+	else{
+		if (data.querySelector("#edit").innerHTML == "Save"){
+			data.querySelector("#itemAdded").style.color = "white";
+		}
+		else{
+			data.querySelector("#itemAdded").style.color = "gray";
+		}
+	}
+}
+
+let edit = (data)=>{
+
+	if (data.querySelector("#edit").innerHTML == "Edit"){
+		data.querySelector("#itemAdded").disabled = false;
+		data.querySelector("#itemAdded").style.color = "white";
+		data.querySelector("#edit").innerHTML = "Save";
+	}
+	else{
+		if (data.querySelector("#chkbox").checked == true){
+			data.querySelector("#itemAdded").disabled = true;
+			data.querySelector("#itemAdded").style.color = "cyan";
+			data.querySelector("#edit").innerHTML = "Edit";
+		}
+		else{
+			data.querySelector("#itemAdded").disabled = true;
+			data.querySelector("#itemAdded").style.color = "gray";
+			data.querySelector("#edit").innerHTML = "Edit";
+		}
+	}
+}
+
+let del = (data)=>{
+	const container = document.getElementById('container');
+	container.removeChild(data);
+ }
+</script>
+</body>
+</html>
